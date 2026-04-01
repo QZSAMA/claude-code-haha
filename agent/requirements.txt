@@ -1,0 +1,6 @@
+langgraph>=1.1.0
+langgraph-checkpoint>=4.0.1
+langgraph-prebuilt>=1.0.8
+anthropic>=0.45.0
+pydantic>=2.7.0
+httpx>=0.28.0
