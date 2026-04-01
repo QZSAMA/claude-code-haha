@@ -1,5 +1,7 @@
 # Claude Code Haha
 
+<p align="right"><strong>中文</strong> | <a href="./README.en.md">English</a></p>
+
 基于 Claude Code 泄露源码修复的**本地可运行版本**，支持接入任意 Anthropic 兼容 API（如 MiniMax、OpenRouter 等）。
 
 > 原始泄露源码无法直接运行。本仓库修复了启动链路中的多个阻塞问题，使完整的 Ink TUI 交互界面可以在本地工作。
@@ -39,15 +41,45 @@
 
 ## 快速开始
 
-### 1. 安装依赖
+### 1. 安装 Bun
 
-需要 [Bun](https://bun.sh) >= 1.1 和 Node.js >= 18。
+本项目运行依赖 [Bun](https://bun.sh)。如果你的电脑还没有安装 Bun，可以先执行下面任一方式：
 
 ```bash
-npm install
+# macOS / Linux（官方安装脚本）
+curl -fsSL https://bun.sh/install | bash
 ```
 
-### 2. 配置环境变量
+如果在精简版 Linux 环境里提示 `unzip is required to install bun`，先安装 `unzip`：
+
+```bash
+# Ubuntu / Debian
+apt update && apt install -y unzip
+```
+
+```bash
+# macOS（Homebrew）
+brew install bun
+```
+
+```powershell
+# Windows（PowerShell）
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+安装完成后，重新打开终端并确认：
+
+```bash
+bun --version
+```
+
+### 2. 安装项目依赖
+
+```bash
+bun install
+```
+
+### 3. 配置环境变量
 
 复制示例文件并填入你的 API Key：
 
@@ -79,7 +111,9 @@ DISABLE_TELEMETRY=1
 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 ```
 
-### 3. 启动
+### 4. 启动
+
+#### macOS / Linux
 
 ```bash
 # 交互 TUI 模式（完整界面）
@@ -94,6 +128,34 @@ echo "explain this code" | ./bin/claude-haha -p
 # 查看所有选项
 ./bin/claude-haha --help
 ```
+
+#### Windows
+
+> **前置要求**：必须安装 [Git for Windows](https://git-scm.com/download/win)（提供 Git Bash，项目内部 Shell 执行依赖它）。
+
+Windows 下启动脚本 `bin/claude-haha` 是 bash 脚本，无法在 cmd / PowerShell 中直接运行。请使用以下方式：
+
+**方式一：PowerShell / cmd 直接调用 Bun（推荐）**
+
+```powershell
+# 交互 TUI 模式
+bun --env-file=.env ./src/entrypoints/cli.tsx
+
+# 无头模式
+bun --env-file=.env ./src/entrypoints/cli.tsx -p "your prompt here"
+
+# 降级 Recovery CLI
+bun --env-file=.env ./src/localRecoveryCli.ts
+```
+
+**方式二：Git Bash 中运行**
+
+```bash
+# 在 Git Bash 终端中，与 macOS/Linux 用法一致
+./bin/claude-haha
+```
+
+> **注意**：部分功能（语音输入、Computer Use、Sandbox 隔离等）在 Windows 上不可用，不影响核心 TUI 交互。
 
 ---
 
